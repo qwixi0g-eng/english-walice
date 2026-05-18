@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English with Alice | Методические разработки</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f6f2ff;
+            color: #1e1a2f;
+            line-height: 1.5;
+        }
+        :root {
+            --primary: #6c3cd4;
+            --primary-dark: #4a1d9e;
+            --primary-light: #e9e0ff;
+            --accent: #ff8c42;
+            --gray-border: #e2ddf5;
+            --shadow-sm: 0 8px 20px rgba(108, 60, 212, 0.08);
+            --card-radius: 28px;
+        }
+        .navbar {
+            background: white;
+            border-bottom: 1px solid var(--gray-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), #9b6dff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .logo i { color: var(--primary); margin-right: 6px; }
+        .nav-links { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
+        .nav-links a {
+            font-weight: 500;
+            transition: 0.2s;
+            padding: 0.3rem 0;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            color: #2c2a3a;
+            text-decoration: none;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            background: var(--primary-light);
+            border-radius: 60px;
+            padding: 0.4rem 0.8rem;
+            gap: 8px;
+        }
+        #globalSearch {
+            border: none;
+            background: transparent;
+            padding: 0.4rem;
+            width: 180px;
+            outline: none;
+            font-family: inherit;
+        }
+        .container { max-width: 1300px; margin: 2rem auto; padding: 0 2rem; }
+        .page { display: none; animation: fade 0.2s ease; }
+        .active-page { display: block; }
+        @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; margin-top: 1.5rem; }
+        .card {
+            background: white;
+            border-radius: var(--card-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: 0.2s;
+            border: 1px solid var(--gray-border);
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover { transform: translateY(-4px); }
+        .card h3 { font-size: 1.35rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .card-meta { display: flex; gap: 1rem; margin-top: 1rem; align-items: center; flex-wrap: wrap; }
+        .btn-outline {
+            background: var(--primary-light);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: var(--primary-dark);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-outline:hover { background: var(--primary); color: white; }
+        .like-btn {
+            background: transparent;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #a28ad6;
+            transition: 0.1s;
+            border: none;
+        }
+        .like-btn.liked { color: #e8415a; }
+        .comments-section { margin-top: 1rem; border-top: 1px solid #eee; padding-top: 1rem; }
+        .comment-input { display: flex; gap: 10px; margin-top: 10px; }
+        .comment-input input { flex: 1; padding: 8px 14px; border-radius: 50px; border: 1px solid var(--gray-border); }
+        .comment-list { margin-top: 12px; font-size: 0.85rem; max-height: 150px; overflow-y: auto; }
+        .comment-item { background: #f7f4fe; margin: 6px 0; padding: 8px 12px; border-radius: 28px; }
+        .teacher-profile {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            background: white;
+            border-radius: var(--card-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .teacher-avatar {
+            background: linear-gradient(145deg, #d9caff, #bda0ff);
+            width: 140px; height: 140px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+        .badge-list { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
+        .badge { background: var(--primary-light); padding: 0.3rem 1rem; border-radius: 40px; font-size: 0.8rem; }
+        .pedagogical-box {
+            background: var(--primary-light);
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-left: 5px solid var(--primary);
+        }
+        .quiz-modal, .file-modal {
+            display: none;
+            position: fixed;
+            top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .quiz-content, .file-content {
+            background: white;
+            max-width: 700px;
+            width: 90%;
+            border-radius: 2rem;
+            padding: 2rem;
+            max-height: 80vh;
+            overflow: auto;
+        }
+        footer { text-align: center; margin-top: 3rem; padding: 1.5rem; color: #7d6bab; border-top: 1px solid var(--gray-border); }
+        @media (max-width: 700px) { .nav-container { flex-direction: column; } .search-wrapper { width: 100%; } #globalSearch { width: 100%; } }
+        .btn-download {
+            background: #4caf50;
+            color: white;
+        }
+        .btn-download:hover { background: #388e3c; color: white; }
+        .btn-view {
+            background: #2196f3;
+            color: white;
+        }
+        .btn-view:hover { background: #0b7dda; color: white; }
+        .download-counter {
+            font-size: 0.7rem;
+            background: #e0e0e0;
+            padding: 2px 6px;
+            border-radius: 20px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="nav-container">
+        <div class="logo"><i class="fas fa-language"></i> English with Alice</div>
+        <div class="nav-links">
+            <a data-page="teacher" class="nav-link active">👩‍🏫 Учитель</a>
+            <a data-page="materials" class="nav-link">📚 Методические разработки</a>
+            <a data-page="events" class="nav-link">🎭 Мероприятия</a>
+            <a data-page="tasks" class="nav-link">✍️ Задания</a>
+            <a data-page="tests" class="nav-link">📝 Тесты</a>
+            <a data-page="experience" class="nav-link">📖 Из опыта работы</a>
+        </div>
+        <div class="search-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="globalSearch" placeholder="Поиск: тест, module, grammar...">
+            <button class="search-btn" id="searchBtn"><i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div id="teacherPage" class="page active-page">
+        <div class="teacher-profile">
+            <div class="teacher-avatar"><i class="fas fa-chalkboard-user fa-3x"></i></div>
+            <div class="achievements">
+                <h2>Рыбкина Алиса Николаевна</h2>
+                <p>Учитель английского языка, МБОУ "СОШ № 24" г. Чебоксары. Работаю по учебнику <strong>«Spotlight»</strong> в начальном и среднем звене. Стаж работы <strong>21 год</strong>. Имею первую квалификационную категорию.</p>
+                <div class="badge-list">
+                    <span class="badge">📚 УМК Spotlight</span>
+                    <span class="badge">🏆 I квалификационная категория</span>
+                    <span class="badge">📖 Английская литература</span>
+                    <span class="badge">🏐 Волейбол</span>
+                </div>
+                <p><i class="fas fa-envelope"></i> alisarybkina@yandex.ru | <i class="fas fa-globe"></i> Более 600 учеников за 21 год</p>
+                <p><strong>Образование:</strong> высшее педагогическое, специализация «Французский и английский языки».</p>
+                <p><strong>Увлечения:</strong> английская литература, в свободное время играю в волейбол.</p>
+            </div>
+        </div>
+        <div class="pedagogical-box">
+            <i class="fas fa-quote-left" style="font-size: 1.4rem; color: var(--primary); margin-right: 8px;"></i>
+            <strong>Моё педагогическое кредо:</strong> Моя роль на уроке – организовать, заинтересовать, вдохновить учеников на самостоятельную работу.
+        </div>
+        <h3 style="margin-top: 2rem;">⭐ Портфолио и достижения</h3>
+        <div class="grid-cards">
+            <div class="card"><h3><i class="fas fa-file-alt"></i> Авторские разработки</h3><p>Рабочие тетради, карточки Quizlet, mind maps по УМК Spotlight.</p></div>
+            <div class="card"><h3><i class="fas fa-trophy"></i> Победы учеников</h3><p>Призёры ВсОШ, победители конференций, викторин.</p></div>
+            <div class="card"><h3><i class="fas fa-video"></i> Вебинары и курсы</h3><p>Авторский курс "Грамматика без слёз".</p></div>
+        </div>
+    </div>
+
+    <div id="materialsPage" class="page"><h2>📚 Методические разработки</h2><div class="grid-cards" id="materialsList"></div></div>
+    <div id="eventsPage" class="page"><h2>🎭 Внеклассные мероприятия и викторины</h2><div class="grid-cards" id="eventsList"></div></div>
+    <div id="tasksPage" class="page"><h2>✍️ Задания для учеников</h2><div class="grid-cards" id="tasksList"></div></div>
+    <div id="testsPage" class="page"><h2>📝 Тесты и контрольные работы</h2><div class="grid-cards" id="testsList"></div></div>
+    <div id="experiencePage" class="page"><h2>📖 Из опыта работы</h2><div class="grid-cards" id="experienceList"></div></div>
+</div>
+
+<div id="fileModal" class="file-modal">
+    <div class="file-content">
+        <h3 id="fileModalTitle">Просмотр материала</h3>
+        <div id="fileModalBody" style="white-space: pre-wrap; background: #f9f9ff; padding: 1rem; border-radius: 1rem; max-height: 50vh; overflow: auto;"></div>
+        <button class="btn-outline" id="closeFileModal">Закрыть</button>
+    </div>
+</div>
+<div id="quizModal" class="quiz-modal"><div class="quiz-content"><h3 id="quizTitle">Тест</h3><div id="quizBody"></div><button class="btn-outline" id="closeQuiz">Закрыть</button></div></div>
+<footer><i class="fas fa-heart"></i> Рыбкина Алиса Николаевна • МБОУ "СОШ №24" г. Чебоксары • УМК Spotlight</footer>
+
+<script>
+    // ======================== ПОЛНЫЕ ТЕКСТЫ ФАЙЛОВ ========================
+    // Методические разработки
+    const fullTextScientists = `Методическая разработка внеклассного мероприятия по английскому языку для 6 класса\nна тему «Ученые и их изобретения»\nРыбкина Алиса Николаевна, учитель английского языка, МБОУ СОШ №24\n\n«Scientists and their inventions»\nЦель: создание благоприятных условий для повышения мотивации к изучаемому языку\nЗадачи: актуализировать лексику, развивать коммуникативные навыки, воспитывать культуру поведения в малых группах.\n\nУчащиеся делятся на три группы: Theorem, Hypothesis, Constant по 4 человека.\nМероприятие проводится в виде интеллектуальной игры «Что? Где? Когда?»\n\nI этап — представление команд "Let me introduce my team"\nII этап — разминка «Guess, who is it?» — просмотр трейлера фильма об учёном (Marie Curie).\nIII этап — "Who is faster?" — соединить изобретение и изобретателя: Zeppelin, Morse code, Foucault's Pendulum, Braille system, Rubik's cube.\nIV этап — «Let's think» — сопоставить предложения с портретами учёных.\nЗаключительный этап — подведение итогов, награждение значками.`;
+    const fullTextJigsaw = `Методическая разработка по английскому языку для 6 класса\n«Применение метода "jigsaw" при изучении грамматического материала»\nРыбкина Алиса Николаевна, учитель английского языка, МБОУ СОШ №24\n\nЧто такое «jigsaw»? Это метод обучения в сотрудничестве (cooperative learning). Он помогает лучше изучить тему, работая в группе и обмениваясь информацией.\n\nРассмотрим использование метода "jigsaw" на уроке в 6 классе по Spotlight (модуль 5). Тема: Утвердительная форма Present Continuous.\n\nПодготовительный этап: расстановка мебели для групповой работы. Участники делятся на 2 группы по 3 человека: «Home group 1» и «Home group 2». Внутри каждой группы выбирают трёх экспертов: A, B, C.\n\nЭтап 1 «Подумай» (3 мин.): команда знакомится с Present Continuous. Эксперт A ищет случаи употребления, B — образование, C — сигналы-указатели.\nЭтап 2 «Поделись с партнером» (7 мин.): эксперты A собираются в группе Expert A и т.д., советуются, записывают информацию.\nЭтап 3 «Представь результат» (5 мин.): эксперты возвращаются в свои команды, систематизируют знания, заполняют таблицу. После этого выполняют тест.\n\nTest:\n1. Present Continuous употребляется для описания действия, которое происходит в данный момент.\n2. Указатели времени: now.\n3. Вспомогательный глагол: to be (am/is/are).\n4. "She is listening to the music now" — правильный перевод.`;
+    const fullTextWonders = `Внеклассное мероприятие для 5 класса\n«Викторина по теме "New Seven wonders of the world"»\n\nЦели: обобщение материала страноведческого характера; развитие интеллектуальных умений.\n\nХод викторины:\nTask 1 — Угадать достопримечательность по картинке (7 чудес света)\nTask 2 — Прочитать текст и определить, о каком чуде идёт речь\nTask 3 — Ответить на вопросы о странах\nTask 4 — Подобрать слова к чудесам света из текстов`;
+    const fullTextWhatWhereWhen = `Внеклассное мероприятие для 8-9 классов "Что? Где? Когда?" по теме "THE United Kingdom"\n\nТуры:\n1. Разминка: вопросы о Великобритании (столица, символы, королева, флаг, валюта)\n2. British inventions: изобретатели и изобретения\n3. English literature: соединить автора и книгу\n4. Guess the singer: Adele, Ed Sheeran, The Beatles и др.`;
+    const fullTextPechaKucha = `Технология «Pecha Kucha» на уроках английского языка\n\nТермин «Pecha Kucha» происходит от японского «звук беседы» и предполагает строго регламентированную презентацию: 20 слайдов по 20 секунд каждый. В школе можно адаптировать как 10 слайдов по 20 секунд.\n\nЭтапы подготовки учащихся:\n1) выбор темы; 2) сбор информации; 3) отбор ключевых идей; 4) создание слайдов; 5) подготовка устного выступления; 6) репетиция с таймером.`;
+    const fullTextRegional = `Региональный компонент на уроках английского языка\n\nВ УМК «Английский в фокусе» (Spotlight) выделен отдельный урок (Culture Corner). В рамках реализации регионального компонента предлагаются материалы по чувашской культуре: викторина про Акатуй, True/False про фестиваль "Аистенок", работа с текстом "Чувашские народные сказки".`;
+    const fullTextGames = `Использование игровых технологий на уроках английского языка\n\nСерии игр:\nСерия «А» — отработка лексических единиц\nСерия «Б» — подготовка к пониманию слов при аудировании\nСерия «В» — отработка навыков чтения\n\nГрамматические игры: «The Gate», «Guess it», «20 Questions», «Кругосветное путешествие», «Театр мимики и жеста».`;
+    const fullTextRoleGames = `Ролевые задания\n\n1. "На ярмарке" — диалоги между представителями торговых фирм и предприятий.\n2. "Модницы" — беседа об одежде в парах.\n3. "Покупки" — покупка продуктов к обеду, завтраку и ужину.\n4. "Покупка билетов" — выбор маршрута и покупка билетов у кассира.\n5. "Что, где, когда?" — игра по аналогии с телепередачей.`;
+    const fullTextLexicalGames = `Лексические задания\n\n1. "Кто убежал?" — запомнить животных на картинке.\n2. "Много слов из одного слова" — назвать животных на буквы из слова.\n3. "Chainword" — цепочка слов.\n4. "Looksharp" — быстрый повтор лексики.\n5. "Съедобное — несъедобное" — реакция на слова.\n6. "Составь фоторобот" — описание внешности.`;
+    const fullTextGrammarGames = `Грамматические игры\n\n1. "The Gate" — отработка вопросительных предложений.\n2. "Guess it" — общие вопросы для угадывания предмета.\n3. "20 Questions" — вопросы только с ответом да/нет.\n4. "Кругосветное путешествие" — конструкция There is/are.\n5. "Театр мимики и жеста" — комментирование действий.\n6. "Что ты рисуешь?" — Present Continuous.\n7. "Конкурс красоты" — притяжательный падеж.`;
+
+    // ========== ТЕСТЫ (НОВЫЕ ФАЙЛЫ) ==========
+    const fullTestModule1 = `NAME: _______________ CLASS: _______________ MODULE 1. SCHOOL DAYS. TEST.\n\n1. Translate:\nSchool - школа, School bag - рюкзак, Pen - ручка, Pencil - карандаш, Rubber - ластик, Ruler - линейка, Book - книга, Pencil case - пенал, English - английский, Maths - математика, Geography - география, PE - физкультура.\n\n2. Look and write: 10-ten, 12-twelve, 13-thirteen, 14-fourteen, 15-fifteen, 16-sixteen, 17-seventeen, 18-eighteen, 19-nineteen, 20-twenty.\n\n3. Put the words in the right order: 1. My name is Oleg. 2. I am eight years old. 3. I like Maths and Science. 4. My favourite subject is English.\n\n4. Put the words into two groups [i:] и [e].`;
+    const fullTestPresentSimpleContinuous = `Test: Present Simple or Present Continuous\n\nA. I am reading a novel these days. (2)\nB. Five thousand dollars is a lot of money. (3)\nC. The committee meets every Monday. (2)\nD. Neither my sister nor I am interested. (1)\nE. None of the information is accurate. (2)\nF. Why is he driving so fast? (4)\nG. He is always talking during lessons. (3)\nH. The number of unemployed people is increasing. (4)\nI. The news is always depressing. (1)\nJ. Here are the documents. (4)\nK. Not only my parents but also my brother enjoys living abroad. (3)\nL. What are you doing this weekend? (4)\nM. The company is changing its policies. (1)`;
+    const fullTestForm2 = `Test form 2 Variant 1 & 2\n\n1. Write the missing letters: ABCDEFGHIJKLMNOPQRSTUVWXYZ\n2. Write words by alphabet: bed, chair, house, lamp, radio, table, window\n3. Find the words: family, yellow, white, chair, radio, table, bedroom, window, grandpa\n4. Match translations\n5. Use He or She\n6. Find words in the grid: house, tree, table, chair, dog, cat, rabbit, ant, mouse, nest, snake, kangaroo, orange, egg, lamp.`;
+    const fullTestBeHave = `Тест 5 класс. Глаголы have/has и to be\n\nУпражнение 1: I have, The women have, He has, The woman has, She has, The children have, They have, The man has, The boy has.\n\nЦифры словами: two, twelve, fifteen, twenty-three, thirty-five, forty-four, fifty-seven, sixty-nine, seventy-two, eighty-one, ninety-eight, one hundred.\n\nГлагол to be: He is, We are, I am, Mary is, You are, Mary and Jack are, The puppy is, Two girls are, I am not, You are not, We are.`;
+    const fullTestPlural = `Множественное число существительных (5 класс)\n\na cat - cats, a box - boxes, a boy - boys, a foot - feet, a glass - glasses, a bus - buses, a sock - socks, a child - children, one woman - women, one mouse - mice, a thief - thieves, one tooth - teeth, one sheep - sheep, a kilo - kilos, a potato - potatoes, a sportsman - sportsmen, a baby - babies, a loaf - loaves, a witch - witches.\n\nThis/These/That/Those выбор правильной формы.`;
+    const fullTest6Module3 = `TEST. 6 form. Module 3\n\n1. Сопоставь: parking zone - парковка, traffic lights - светофор, zebra crossing - пешеходный переход, wear a seat belt - пристегни ремень.\n2. Отрицательная форма: Don't talk to the driver! Don't cross... и т.д.\n3. Вставь can/can't.\n4. Перевод: Don't talk to the bus driver! Traffic lights. Don't park here! и др.\n5. Дорожные знаки.\n6. Допиши предложения.\n7. Противоположности.\n8. Предлоги in/on/by.\n9. Перевод предложений.\n10. Сопоставь.\n11. Выбери can/can't.\n12. Текст про Kate и Bobby с вопросами.`;
+    const fullTest7Module2 = `Test 7 module 2\n\n1. Choose best word: appearance, crime, created, investigation, hid, after, put up, explored, area, amazing.\n2. Fill in: enjoy, adventure, amazing, adventures, character, funny, criminals.\n3. Past Simple: found, discovered, watched, sent, wrote.\n4. Used to: I used to play football when I was 10.\n5. Translate: imagination, writer, famous, explore, unusual, investigation, event, character, journey, inspire, amazing, humorous, crime, gossip, adventure, quiz, discover.`;
+    const fullTest8Form = `Test 8 form\n\n1. Passive Voice: The flowers are watered in the evening. The way was shown to her. A box of fruit will be sent to us. The horses are often driven to the fields. The book has been translated into 25 languages. Cameras can't be used in the museum.\n2. Prepositions: put off, put on, put out, put away, put up with, put through.\n3. Prepositions: for, with, in, to, by.`;
+    const fullTestModule2_3Class = `Module 2 Test (3 класс)\n\nVariant 1 & 2\n\n1. Read and complete: mother, brother, grandmother, grandfather, father, sister.\n2. Translate: старший брат, дедушка, мама, бабушка, младшая сестра.\n3. Choose right answer: His, They, her, My, our.\n4. Fill in am/is/are.\n5. Choose the right answer.\n6. Read and complete numbers.\n7. Make plural: parrots, cats, eggs, pupils, boys, houses, windows, ants.\n8. Fill in is/are.`;
+
+    // Данные для вкладок
+    const materialsData = [
+        { id: "mat1", title: "📘 Ученые и их изобретения (6 класс)", desc: "Внеклассное мероприятие в формате «Что? Где? Когда?»", theme: "science", grade: "6", fakeLikes: 67, fakeComments: ["Отличная разработка!"], fileContent: fullTextScientists },
+        { id: "mat2", title: "🧩 Метод 'Jigsaw' на уроках английского", desc: "Применение метода сотрудничества при изучении Present Continuous", theme: "grammar", grade: "6", fakeLikes: 54, fakeComments: ["Очень эффективно!"], fileContent: fullTextJigsaw }
+    ];
+
+    const eventsData = [
+        { id: "ev1", title: "🗣️ Speaking Club 'Let's Talk!'", desc: "По средам в 17:00", theme: "speaking", fakeLikes: 78, fakeComments: ["Ждём!"], fileContent: "Темы: Cinema, Travel, Hobbies." },
+        { id: "ev2", title: "🏆 Олимпиада по английскому", desc: "Школьный тур 20-25 апреля", theme: "olympiad", fakeLikes: 54, fakeComments: ["Готовимся!"], fileContent: "Задания: лексика, чтение, грамматика, письмо." },
+        { id: "ev3", title: "🎭 Шекспир и Иванов: диалог культур", desc: "Сравнение классиков", theme: "literature", category: "Нач. классы", fakeLikes: 35, fakeComments: ["Интересно!"], fileContent: "Шекспир, Иванов, сравнение, викторина." },
+        { id: "ev4", title: "🥞 Масленица: традиции и английский", desc: "Масленица vs Pancake Day", theme: "culture", category: "Нач. классы", fakeLikes: 42, fakeComments: ["Супер!"], fileContent: "Рассказ, сравнение, игры, мастер-класс." },
+        { id: "ev5", title: "🌍 Викторина 'New Seven Wonders' (5 класс)", desc: "Полный сценарий викторины", theme: "quiz", grade: "5", fakeLikes: 63, fakeComments: ["Классная викторина!"], fileContent: fullTextWonders },
+        { id: "ev6", title: "🇬🇧 Что? Где? Когда? 'The UK' (8-9 класс)", desc: "Интеллектуальная игра о Великобритании", theme: "quiz", grade: "8-9", fakeLikes: 71, fakeComments: ["Узнали много нового!"], fileContent: fullTextWhatWhereWhen }
+    ];
+
+    const tasksData = [
+        { id: "task1", title: "🎭 Ролевые задания", desc: "Игры «На ярмарке», «Модницы», «Покупки», «Покупка билетов»", theme: "role", grade: "5-9", fakeLikes: 72, fakeComments: ["Очень живые диалоги!"], fileContent: fullTextRoleGames },
+        { id: "task2", title: "📚 Лексические задания", desc: "«Кто убежал?», Chainword, Looksharp, Кроссворд, Фоторобот", theme: "lexical", grade: "1-11", fakeLikes: 88, fakeComments: ["Отличная подборка!"], fileContent: fullTextLexicalGames },
+        { id: "task3", title: "📖 Грамматические игры", desc: "The Gate, Guess it, 20 Questions, Театр мимики и жеста", theme: "grammar", grade: "5-11", fakeLikes: 91, fakeComments: ["Грамматика стала интересной!"], fileContent: fullTextGrammarGames }
+    ];
+
+    // ========== ТЕСТЫ — 9 ПОСТОВ ==========
+    const testsData = [
+        { id: "t1", title: "📝 Module 1: School Days (2-3 класс)", desc: "Лексика, порядок слов, числа, транскрипция [i:] и [e]", grade: "2-3", fakeLikes: 45, fakeComments: ["Хороший тест для начала года!"], fileContent: fullTestModule1 },
+        { id: "t2", title: "📝 Present Simple vs Present Continuous", desc: "Выбор правильной формы глагола, 15 заданий с ответами", grade: "5-9", fakeLikes: 78, fakeComments: ["Отличная тренировка!"], fileContent: fullTestPresentSimpleContinuous },
+        { id: "t3", title: "📝 Test form 2 (2 класс)", desc: "Алфавит, порядок слов, поиск слов, перевод", grade: "2", fakeLikes: 38, fakeComments: ["Детям очень понравилось"], fileContent: fullTestForm2 },
+        { id: "t4", title: "📝 Глаголы have/has и to be (5 класс)", desc: "Вставка have/has, цифры словами, формы глагола to be", grade: "5", fakeLikes: 52, fakeComments: ["Полезный тест на отработку"], fileContent: fullTestBeHave },
+        { id: "t5", title: "📝 Множественное число существительных", desc: "Исключения и правила, выбор this/that/these/those", grade: "5", fakeLikes: 47, fakeComments: ["Отлично для запоминания исключений"], fileContent: fullTestPlural },
+        { id: "t6", title: "📝 Module 3 (6 класс): Road Safety", desc: "Дорожные знаки, can/can't, правила безопасности, текст", grade: "6", fakeLikes: 63, fakeComments: ["Актуальная тема!"], fileContent: fullTest6Module3 },
+        { id: "t7", title: "📝 Module 2 (7 класс): Detectives", desc: "Лексика детективов, Past Simple, used to, перевод", grade: "7", fakeLikes: 59, fakeComments: ["Интересные задания"], fileContent: fullTest7Module2 },
+        { id: "t8", title: "📝 Passive Voice (8 класс)", desc: "Переделка в пассивный залог, предлоги put, by/for/to/with", grade: "8", fakeLikes: 68, fakeComments: ["Чётко и понятно"], fileContent: fullTest8Form },
+        { id: "t9", title: "📝 Module 2 (2-3 класс): Семья", desc: "Члены семьи, притяжательные местоимения, am/is/are, числа", grade: "2-3", fakeLikes: 41, fakeComments: ["Отлично для младших"], fileContent: fullTestModule2_3Class }
+    ];
+
+    const experienceData = [
+        { id: "exp1", title: "🎤 Технология «Pecha Kucha»", desc: "20 слайдов по 20 секунд", theme: "method", grade: "8-11", fakeLikes: 89, fakeComments: ["Очень крутая техника!"], fileContent: fullTextPechaKucha },
+        { id: "exp2", title: "🏞️ Региональный компонент", desc: "Материалы о Чувашии в УМК Spotlight", theme: "regional", grade: "5-9", fakeLikes: 76, fakeComments: ["Важная тема!"], fileContent: fullTextRegional },
+        { id: "exp3", title: "🎲 Игровые технологии", desc: "Лексические, грамматические и ролевые игры", theme: "games", grade: "1-11", fakeLikes: 94, fakeComments: ["Игры спасают на уроке!"], fileContent: fullTextGames }
+    ];
+
+    // Хранилища + накрученные счётчики
+    let likes = JSON.parse(localStorage.getItem("eng_likes")) || {};
+    let comments = JSON.parse(localStorage.getItem("eng_comments")) || {};
+    let downloads = JSON.parse(localStorage.getItem("eng_downloads")) || {
+        "mat_mat1": 127, "mat_mat2": 98,
+        "ev_ev1": 28, "ev_ev2": 19, "ev_ev3": 42, "ev_ev4": 38, "ev_ev5": 156, "ev_ev6": 143,
+        "task_task1": 203, "task_task2": 187, "task_task3": 245,
+        "test_t1": 312, "test_t2": 456, "test_t3": 234, "test_t4": 189, "test_t5": 267, "test_t6": 345, "test_t7": 298, "test_t8": 401, "test_t9": 223,
+        "exp_exp1": 203, "exp_exp2": 187, "exp_exp3": 245
+    };
+
+    function saveAll() {
+        localStorage.setItem("eng_likes", JSON.stringify(likes));
+        localStorage.setItem("eng_comments", JSON.stringify(comments));
+        localStorage.setItem("eng_downloads", JSON.stringify(downloads));
+    }
+
+    function getLikeCount(itemId, fakeBase) { return fakeBase + (likes[itemId] === true ? 1 : 0); }
+
+    function downloadAsDoc(content, filename) {
+        const blob = new Blob([content], { type: "application/msword" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${filename}.doc`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+    }
+
+    function viewContent(content, title) {
+        document.getElementById("fileModalTitle").innerText = title;
+        document.getElementById("fileModalBody").innerText = content;
+        document.getElementById("fileModal").style.display = "flex";
+    }
+
+    function incrementDownload(itemId) {
+        downloads[itemId] = (downloads[itemId] || 0) + 1;
+        saveAll();
+        const span = document.getElementById(`download-counter-${itemId}`);
+        if (span) span.innerText = downloads[itemId];
+    }
+
+    window.handleView = function(itemId) {
+        const allItems = [...materialsData, ...eventsData, ...tasksData, ...testsData, ...experienceData];
+        const item = allItems.find(i => `mat_${i.id}` === itemId || `ev_${i.id}` === itemId || `task_${i.id}` === itemId || `test_${i.id}` === itemId || `exp_${i.id}` === itemId);
+        if (item) viewContent(item.fileContent, item.title);
+    };
+    window.handleDownload = function(itemId) {
+        const allItems = [...materialsData, ...eventsData, ...tasksData, ...testsData, ...experienceData];
+        const item = allItems.find(i => `mat_${i.id}` === itemId || `ev_${i.id}` === itemId || `task_${i.id}` === itemId || `test_${i.id}` === itemId || `exp_${i.id}` === itemId);
+        if (item) { downloadAsDoc(item.fileContent, item.title); incrementDownload(itemId); }
+    };
+
+    function renderCard(item, type, fakeLikes, linkedTestId = null, fileContent = null) {
+        const itemId = `${type}_${item.id}`;
+        const isLiked = likes[itemId] === true;
+        const likeCount = getLikeCount(itemId, fakeLikes);
+        const downloadCount = downloads[itemId] || 0;
+        const fileActions = fileContent ? `
+            <div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
+                <button class="btn-outline btn-view" onclick="handleView('${itemId}')"><i class="fas fa-eye"></i> Просмотр</button>
+                <button class="btn-outline btn-download" onclick="handleDownload('${itemId}')"><i class="fas fa-download"></i> Скачать <span id="download-counter-${itemId}" class="download-counter">${downloadCount}</span></button>
+            </div>
+        ` : '';
+        const gradeOrCat = item.grade || item.category || '';
+        return `
+            <div class="card" data-item-id="${itemId}" data-theme="${item.theme || ''}">
+                <h3>${item.title} <span style="font-size:0.7rem; background:#f0eefa; padding:2px 8px; border-radius:20px;">${gradeOrCat}</span></h3>
+                <p>${item.desc}</p>
+                ${fileActions}
+                <div class="card-meta">
+                    <button class="like-btn" data-id="${itemId}">${isLiked ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>'}</button>
+                    <span class="like-counter" data-id="${itemId}">❤️ ${likeCount}</span>
+                </div>
+                <div class="comments-section">
+                    <div class="comment-list" id="commentList-${itemId}"></div>
+                    <div class="comment-input">
+                        <input type="text" placeholder="Написать комментарий..." class="comment-field" data-id="${itemId}">
+                        <button class="btn-outline comment-submit" data-id="${itemId}">Отправить</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderAll() {
+        document.getElementById("materialsList").innerHTML = materialsData.map(m => renderCard(m, "mat", m.fakeLikes, null, m.fileContent)).join('');
+        document.getElementById("eventsList").innerHTML = eventsData.map(e => renderCard(e, "ev", e.fakeLikes, null, e.fileContent)).join('');
+        document.getElementById("tasksList").innerHTML = tasksData.map(t => renderCard(t, "task", t.fakeLikes, null, t.fileContent)).join('');
+        document.getElementById("testsList").innerHTML = testsData.map(t => renderCard(t, "test", t.fakeLikes, null, t.fileContent)).join('');
+        document.getElementById("experienceList").innerHTML = experienceData.map(e => renderCard(e, "exp", e.fakeLikes, null, e.fileContent)).join('');
+        attachCardEvents();
+        renderAllComments();
+    }
+
+    function renderAllComments() {
+        const allIds = [...materialsData.map(m=>`mat_${m.id}`), ...eventsData.map(e=>`ev_${e.id}`), ...tasksData.map(t=>`task_${t.id}`), ...testsData.map(t=>`test_${t.id}`), ...experienceData.map(e=>`exp_${e.id}`)];
+        allIds.forEach(id => {
+            const container = document.getElementById(`commentList-${id}`);
+            if(container) {
+                const comms = comments[id] || [];
+                container.innerHTML = comms.map(c => `<div class="comment-item"><i class="fas fa-comment"></i> ${escapeHtml(c.text)} <small>(${c.date})</small></div>`).join('');
+                if(comms.length === 0) container.innerHTML = '<div class="comment-item">Будьте первым ✨</div>';
+            }
+        });
+    }
+
+    function attachCardEvents() {
+        document.querySelectorAll('.like-btn').forEach(btn => { btn.removeEventListener('click', likeHandler); btn.addEventListener('click', likeHandler); });
+        document.querySelectorAll('.comment-submit').forEach(btn => { btn.removeEventListener('click', commentSubmitHandler); btn.addEventListener('click', commentSubmitHandler); });
+    }
+
+    function likeHandler(e) {
+        e.stopPropagation();
+        const btn = e.currentTarget;
+        const id = btn.dataset.id;
+        if (!id) return;
+        const wasLiked = likes[id] === true;
+        likes[id] = !wasLiked;
+        saveAll();
+        const counterSpan = document.querySelector(`.like-counter[data-id="${id}"]`);
+        if (counterSpan) {
+            let current = parseInt(counterSpan.innerText.replace('❤️','').trim());
+            counterSpan.innerText = `❤️ ${current + (wasLiked ? -1 : 1)}`;
+        }
+        btn.innerHTML = !wasLiked ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>';
+        if(!wasLiked) btn.classList.add("liked"); else btn.classList.remove("liked");
+    }
+
+    function commentSubmitHandler(e) {
+        const btn = e.currentTarget;
+        const parentCard = btn.closest('.card');
+        const itemId = btn.dataset.id || parentCard?.dataset.itemId;
+        if(!itemId) return;
+        const inputField = parentCard.querySelector('.comment-field');
+        if(inputField && inputField.value.trim()) {
+            if(!comments[itemId]) comments[itemId] = [];
+            comments[itemId].push({ text: inputField.value.trim(), date: new Date().toLocaleString() });
+            saveAll();
+            const container = document.getElementById(`commentList-${itemId}`);
+            if(container) container.innerHTML = comments[itemId].map(c => `<div class="comment-item"><i class="fas fa-comment"></i> ${escapeHtml(c.text)} <small>(${c.date})</small></div>`).join('');
+            inputField.value = "";
+        }
+    }
+
+    function escapeHtml(s) { return s.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+
+    function navigate(page) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+        document.getElementById(`${page}Page`).classList.add('active-page');
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        document.querySelector(`.nav-link[data-page="${page}"]`).classList.add('active');
+        let val = document.getElementById("globalSearch").value;
+        if(val) performSearch(val); else showAllCards();
+    }
+
+    function performSearch(q) {
+        if(!q.trim()) { showAllCards(); return; }
+        let lower = q.toLowerCase();
+        document.querySelectorAll('.card').forEach(card => {
+            let title = card.querySelector('h3')?.innerText.toLowerCase() || '';
+            let desc = card.querySelector('p')?.innerText.toLowerCase() || '';
+            card.style.display = (title.includes(lower) || desc.includes(lower)) ? '' : 'none';
+        });
+    }
+    function showAllCards() { document.querySelectorAll('.card').forEach(c => c.style.display = ''); }
+
+    function init() {
+        const all = [...materialsData.map(m=>({id:`mat_${m.id}`, likes:m.fakeLikes, comms:m.fakeComments})),
+                     ...eventsData.map(e=>({id:`ev_${e.id}`, likes:e.fakeLikes, comms:e.fakeComments})),
+                     ...tasksData.map(t=>({id:`task_${t.id}`, likes:t.fakeLikes, comms:t.fakeComments})),
+                     ...testsData.map(t=>({id:`test_${t.id}`, likes:t.fakeLikes, comms:t.fakeComments})),
+                     ...experienceData.map(e=>({id:`exp_${e.id}`, likes:e.fakeLikes, comms:e.fakeComments}))];
+        all.forEach(item => {
+            if (!(item.id in likes)) likes[item.id] = false;
+            if (!comments[item.id] && item.comms) comments[item.id] = item.comms.map(txt => ({ text: txt, date: "Апрель 2026" }));
+        });
+        saveAll();
+        renderAll();
+    }
+
+    document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigate(link.dataset.page); }));
+    document.getElementById("searchBtn").addEventListener('click', () => performSearch(document.getElementById("globalSearch").value));
+    document.getElementById("globalSearch").addEventListener('keyup', (e) => { if(e.key === 'Enter') performSearch(e.target.value); });
+    document.getElementById("closeQuiz").onclick = () => document.getElementById("quizModal").style.display = "none";
+    document.getElementById("closeFileModal").onclick = () => document.getElementById("fileModal").style.display = "none";
+    window.onclick = (e) => { if(e.target === document.getElementById("quizModal")) document.getElementById("quizModal").style.display = "none"; if(e.target === document.getElementById("fileModal")) document.getElementById("fileModal").style.display = "none"; };
+
+    init();
+</script>
+</body>
+</html>
